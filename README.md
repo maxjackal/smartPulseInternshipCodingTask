@@ -1,8 +1,9 @@
 # smartPulseInternshipCodingTask
+
+
 def excel_tablo(data):
     wb = openpyxl.Workbook()
     ws = wb.active
-
     ws['A1'] = 'Tarih'
     ws['B1'] = 'Toplam İşlem Miktarı(MWh)'
     ws['C1'] = 'Toplam İşlem Tutar(TL)'
