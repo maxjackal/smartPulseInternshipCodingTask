@@ -25,5 +25,6 @@ def excel_tablo(data):
 
     wb.save('veriler.xlsx')
 
- burada excel tablolarımı olusturdum 
-df=pd.read_excel('veriler.xslx') ile excel tablosu olusturmaya çalıştım fakat hata aldım
+burada excel tablolarımı olusturdum 
+df=pd.read_excel('veriler.xslx') 
+ile excel tablosu olusturmaya çalıştım fakat hata aldım
