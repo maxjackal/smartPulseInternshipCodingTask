@@ -21,6 +21,7 @@ import openpyxl
 from openpyxl.styles import Alignment
 from openpyxl import Workbook
 import pandas as pd
+#kullanacağım modülleri import ettim
 
 
 # In[4]:
@@ -31,8 +32,14 @@ response = requests.get(url1).json()
 conract_grup = {}
 def parser_data(data):
    
+#url'e get isteği atıp verileri json fromatın dönüştürdüm
+#conract_grup adında boş bir sözlük oluşturdum
+#parser_data fonksiyonu oluşturup data'nın verilerini döndürmesini sağladım
+
     for transcation in data['body']['intraDayTradeHistoryList']:
         if not transcation['conract'].startswith('PH'):
+#intraDayTradeHistoryList listesindeki transcation sözlüğü için işlem yapılır
+#eğer PH ile başlamıyorsa döngü sonraki adıma geçer
             continue
         if transcation['conract'] not in conract_grup:
             conract_grup[transcation['conract']] = {
@@ -41,12 +48,18 @@ def parser_data(data):
                 'Toplam İşlem Miktarı': transcation['quantity'] / 10
             }
             conract_grup[transcation['conract']]['Ağırlıklı Ortalama Fiyat'] = conract_grup[transcation['conract']][ 'Toplam İşlem Tutar']/conract_grup[transcation['conract']]['Toplam İşlem Miktarı']
+   #conract_grup sözlüğünde ilgili conract yoksa, yeni bir sözlük oluştururuz
+   #belirli verileri bu sözlükte tutarız yani sözleşmenin tarihi, toplam işlem tutarı ve toplam işlem
+   #miktarı ve ağırlıklı ortalama fiyat hesaplanarak da bu sözlüğe eklenir
         else:
             conract_grup[transcation['conract']][ 'Toplam İşlem Tutar'] += transcation['price'] * transcation['quantity'] / 10
             conract_grup[transcation['conract']]['Toplam İşlem Miktarı']+= transcation['quantity'] / 10
             conract_grup[transcation['conract']]['Ağırlıklı Ortalama Fiyat'] = conract_grup[transcation['conract']][ 'Toplam İşlem Tutar']/conract_grup[transcation['conract']]['Toplam İşlem Miktarı']
+   #eğer conract_grup sözlüğünde conract adı mevcut ise
+   #sözleşmenin toplam işlem tutarına ve toplam işlem miktarına ilgili işlemin değerini ekler
+   #ağırlıklı ortalama fiyat da yeniden hesaplanır
     return conract_grup
-
+#conract_grup sözlüğünü döndürür
 
 # In[14]:
 
